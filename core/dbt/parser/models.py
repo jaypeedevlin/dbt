@@ -38,7 +38,8 @@ class ModelParser(SimpleSQLParser[ParsedModelNode]):
             config._config_calls = config_calls
 
             # this uses the updated config to set all the right things in the node
-            # if there are hooks present, it WILL render jinja. Will need to change when we support hooks
+            # if there are hooks present, it WILL render jinja. Will need to change
+            # when we support hooks
             self.update_parsed_node(node, config)
 
             # manually set the unrendered config TODO this is probably wrong
@@ -51,6 +52,6 @@ class ModelParser(SimpleSQLParser[ParsedModelNode]):
                 node.sources.append([sourcev[0], sourcev[1]])
             for configv in res['configs']:
                 node.config[configv[0]] = configv[1]
-            
+
         else:
             super().render_update(node, config)
