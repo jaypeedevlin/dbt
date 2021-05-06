@@ -42,10 +42,11 @@ class ModelParser(SimpleSQLParser[ParsedModelNode]):
             # when we support hooks
             self.update_parsed_node(node, config)
 
-            # manually set the unrendered config TODO this is probably wrong
-            node.unrendered_config = dict(res['configs'])
+            # udpate the unrendered config with values from the file
+            # values from yaml files are in there already
+            node.unrendered_config.update(dict(res['configs']))
 
-            # TODO probably better way to do this.
+            # set refs, sources, and configs on the node object
             node.refs = node.refs + res['refs']
             for sourcev in res['sources']:
                 # TODO change extractor to match type here
