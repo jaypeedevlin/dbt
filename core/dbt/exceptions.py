@@ -780,9 +780,6 @@ def raise_duplicate_resource_name(node_1, node_2):
     else:
         get_func = '"{}"'.format(duped_name)
 
-    import pdb
-    pdb.set_trace()
-
     raise_compiler_error(
         'dbt found two resources with the name "{}". Since these resources '
         'have the same name,\ndbt will be unable to find the correct resource '
