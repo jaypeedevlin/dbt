@@ -2,7 +2,7 @@ import abc
 import itertools
 import os
 from typing import (
-    List, Dict, Any, Generic, TypeVar
+    List, Dict, Any, Generic, Optional, TypeVar
 )
 
 from dbt.dataclass_schema import ValidationError
@@ -28,6 +28,7 @@ from dbt.exceptions import (
 from dbt import hooks
 from dbt.node_types import NodeType
 from dbt.parser.search import FileBlock
+from hologram import OPTIONAL_TYPES
 
 # internally, the parser may store a less-restrictive type that will be
 # transformed into the final type. But it will have to be derived from
@@ -55,11 +56,24 @@ class BaseParser(Generic[FinalValue]):
     def resource_type(self) -> NodeType:
         pass
 
-    def generate_unique_id(self, resource_name: str) -> str:
-        """Returns a unique identifier for a resource"""
-        return "{}.{}.{}".format(self.resource_type,
-                                 self.project.project_name,
-                                 resource_name)
+    def generate_unique_id(
+        self, 
+        resource_name: str,
+        hash: Optional[str] = None) -> str:
+        """Returns a unique identifier for a resource
+        An optional hash may be passed in to ensure uniqueness for edge cases"""
+
+        return '.'.join(
+            filter(
+                None, 
+                [
+                    self.resource_type, 
+                    self.project.project_name, 
+                    resource_name,
+                    hash
+                ]
+            )
+        )
 
 
 class Parser(BaseParser[FinalValue], Generic[FinalValue]):
