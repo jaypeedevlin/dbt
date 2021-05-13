@@ -171,6 +171,7 @@ class TestDocsGenerate(DBTIntegrationTest):
 
         vars_arg = '--vars={{test_schema: {}}}'.format(self.unique_schema())
 
+        self.run_dbt(["deps"])
         self.assertEqual(len(self.run_dbt(["seed", vars_arg])), seed_count)
         self.assertEqual(len(self.run_dbt(['run', vars_arg])), model_count)
         os.remove(normalize('target/manifest.json'))
@@ -3284,6 +3285,7 @@ class TestDocsGenerateLongWindowsPaths(DBTIntegrationTest):
         return self.dir("trivial_models")
 
     def run_and_generate(self):
+        self.run_dbt(["deps"])
         self.assertEqual(len(self.run_dbt(['run'])), 1)
         os.remove(normalize('target/manifest.json'))
         os.remove(normalize('target/run_results.json'))

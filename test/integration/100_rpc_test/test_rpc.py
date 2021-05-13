@@ -722,8 +722,8 @@ class TestRPCServerCompileRun(HasRPCServer):
             task_tags={'some_tag': True, 'another_tag': 'blah blah blah'}
         ).json()
         error_data = self.assertIsErrorWith(data, 10004, 'Compilation Error', {
-            'type': 'CompilationException',
-            'message': "Compilation Error in rpc mymodel (from remote system)\n  'reff' is undefined",
+            'type': 'UndefinedMacroException',
+            'message': "Compilation Error in rpc mymodel (from remote system)\n  'reff' is undefined. This can happen when calling a macro that does not exist. Check for typos and/or install package dependencies with \"dbt deps\".",
             'compiled_sql': None,
             'raw_sql': 'select * from {{ reff("nonsource_descendant") }}',
             'tags': {'some_tag': True, 'another_tag': 'blah blah blah'}
