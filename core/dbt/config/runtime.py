@@ -330,7 +330,7 @@ class RuntimeConfig(Project, Profile, AdapterRequiredConfig):
             internal_packages = get_include_paths(self.credentials.type)
             # raise exception if fewer installed packages than in packages.yml
             package_dirs = self._get_project_directories()
-            count_packages_specified = len(self.packages.packages)
+            count_packages_specified = len(self.packages.get('packages', 0))
             count_packages_installed = len(tuple(package_dirs))
             if count_packages_specified > count_packages_installed:
                 raise_compiler_error(
