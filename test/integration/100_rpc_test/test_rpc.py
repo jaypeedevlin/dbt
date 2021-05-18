@@ -1143,11 +1143,8 @@ class TestRPCServerDeps(HasRPCServer):
     def _check_start_predeps(self):
         self.assertFalse(os.path.exists('./dbt_modules'))
         status = self.assertIsResult(self.query('status').json())
-        self.assertEqual(status['state'], 'ready')
-
-        self.assertIsError(self.async_query('compile').json())
-        if os.path.exists('./dbt_modules'):
-            self.assertEqual(len(os.listdir('./dbt_modules')), 0)
+        # will return an error because defined dependency is missing
+        self.assertEqual(status['state'], 'error')
         return status
 
     def _check_deps_ok(self, status):
